@@ -9,7 +9,11 @@ python deap_VRP.py "input filename"
 
 
 input file format
+
 days in the schedule
+
 truck info etc distance cost
+
 location -> id, x, y
+
 requests -> id, location id, first day, last day, capacity
