@@ -1,8 +1,9 @@
 from collector import (
 	GarbageCollector, Schedule, EvalSheet,
 )
-from typing import Callable, Iterator
-from sys import maxsize, argv
+from typing import Callable
+from sys import argv
+from pathlib import Path
 from deap import base, tools, creator, algorithms
 import numpy as np
 import matplotlib
@@ -10,6 +11,7 @@ import matplotlib.pyplot as plt
 import random
 import math
 import colorsys
+import os
 
 def skewed_sample(start, end, scale=5):
 	value = int(np.random.exponential(scale)) + start
@@ -459,11 +461,14 @@ def main(input_fname: str, seed: int = 200):
 	collector = GarbageCollector(input_fname, seed=seed)
 	deap = Deap_VRP(collector)
 	matplotlib.use('Agg')
-	size = 400
+	dir_name = Path(input_fname.replace(".txt", ""))
+	dir_name.mkdir(parents=True, exist_ok=True)
+	os.chdir(dir_name)
+	size = 300
 	max_iter_truck = 500
 	res = run_deap_loop(
 		deap, input_fname,
-		size=200, max_iter_truck=100
+		size=size, max_iter_truck=max_iter_truck
 	)
 	eval = deap.evaluateTruckSchedule(res, True)
 	schedule = Schedule(eval.schedule)
